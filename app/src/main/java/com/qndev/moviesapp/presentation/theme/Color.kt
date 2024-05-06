@@ -1,4 +1,4 @@
-package com.qndev.moviesapp.ui.theme
+package com.qndev.moviesapp.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
