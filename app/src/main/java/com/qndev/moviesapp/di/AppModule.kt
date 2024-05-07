@@ -2,8 +2,6 @@ package com.qndev.moviesapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.qndev.moviesapp.data.local.MovieDatabase
 import com.qndev.moviesapp.data.remote.api.MovieApi
 import dagger.Module
@@ -45,8 +43,4 @@ object AppModule {
             "MovieDatabase.db"
         ).build()
     }
-
-    @Singleton
-    @Provides
-    fun provideGson(): Gson = GsonBuilder().create()
 }

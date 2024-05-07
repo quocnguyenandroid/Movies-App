@@ -17,15 +17,14 @@ import com.qndev.moviesapp.data.remote.response.detail.ProductionCompany
 import com.qndev.moviesapp.data.remote.response.detail.ProductionCountry
 import com.qndev.moviesapp.data.remote.response.detail.SpokenLanguage
 import com.qndev.moviesapp.domain.model.MovieDetail
-import javax.inject.Inject
 
 class MovieDetailMapper {
 
-    @Inject
-    lateinit var gson: Gson
+    private val gson = Gson()
 
     @TypeConverter
-    fun convertBelongsToCollectionToJson(value: BelongsToCollectionEntity): String = gson.toJson(value)
+    fun convertBelongsToCollectionToJson(value: BelongsToCollectionEntity): String =
+        gson.toJson(value)
 
     @TypeConverter
     fun convertJsonToBelongsToCollection(value: String): BelongsToCollectionEntity {
@@ -43,7 +42,8 @@ class MovieDetailMapper {
     }
 
     @TypeConverter
-    fun convertProductionCompanyEntityListToJson(value: List<ProductionCompanyEntity>): String = gson.toJson(value)
+    fun convertProductionCompanyEntityListToJson(value: List<ProductionCompanyEntity>): String =
+        gson.toJson(value)
 
     @TypeConverter
     fun convertJsonToProductionCompanyEntityList(value: String): List<ProductionCompanyEntity> {
@@ -52,7 +52,8 @@ class MovieDetailMapper {
     }
 
     @TypeConverter
-    fun convertProductionCountryEntityListToJson(value: List<ProductionCountryEntity>): String = gson.toJson(value)
+    fun convertProductionCountryEntityListToJson(value: List<ProductionCountryEntity>): String =
+        gson.toJson(value)
 
     @TypeConverter
     fun convertJsonToProductionCountryEntityList(value: String): List<ProductionCountryEntity> {
@@ -61,7 +62,8 @@ class MovieDetailMapper {
     }
 
     @TypeConverter
-    fun convertSpokenLanguageEntityListToJson(value: List<SpokenLanguageEntity>): String = gson.toJson(value)
+    fun convertSpokenLanguageEntityListToJson(value: List<SpokenLanguageEntity>): String =
+        gson.toJson(value)
 
     @TypeConverter
     fun convertJsonToSpokenLanguageEntityList(value: String): List<SpokenLanguageEntity> {
@@ -140,7 +142,8 @@ fun MovieDetailEntity.toMovieDetailModel(): MovieDetail {
         title = title,
         video = video,
         voteAverage = voteAverage,
-        voteCount = voteCount
+        voteCount = voteCount,
+        imdbUrl = MovieApi.IMDB_URL + imdbId
     )
 }
 
@@ -156,8 +159,8 @@ private fun BelongsToCollection?.toBelongsCollectionEntity(): BelongsToCollectio
 private fun List<Genre>?.toGenreEntityList(): List<GenreEntity> {
     return this?.map {
         GenreEntity(
-            id = it.id,
-            name = it.name
+            id = it.id ?: -1,
+            name = it.name ?: ""
         )
     } ?: emptyList()
 }
@@ -165,10 +168,10 @@ private fun List<Genre>?.toGenreEntityList(): List<GenreEntity> {
 private fun List<ProductionCompany>?.toProductionCompanyEntityList(): List<ProductionCompanyEntity> {
     return this?.map {
         ProductionCompanyEntity(
-            id = it.id,
-            logoPath = it.logo_path,
-            name = it.name,
-            originCountry = it.origin_country
+            id = it.id ?: -1,
+            logoPath = it.logo_path ?: "",
+            name = it.name ?: "",
+            originCountry = it.origin_country ?: ""
         )
     } ?: emptyList()
 }
@@ -176,8 +179,8 @@ private fun List<ProductionCompany>?.toProductionCompanyEntityList(): List<Produ
 private fun List<ProductionCountry>?.toProductionCountryEntityList(): List<ProductionCountryEntity> {
     return this?.map {
         ProductionCountryEntity(
-            iso31661 = it.iso_3166_1,
-            name = it.name
+            iso31661 = it.iso_3166_1 ?: "",
+            name = it.name ?: ""
         )
     } ?: emptyList()
 }
@@ -185,9 +188,9 @@ private fun List<ProductionCountry>?.toProductionCountryEntityList(): List<Produ
 private fun List<SpokenLanguage>?.toSpokenLanguageEntityList(): List<SpokenLanguageEntity> {
     return this?.map {
         SpokenLanguageEntity(
-            englishName = it.english_name,
-            iso6391 = it.iso_639_1,
-            name = it.name
+            englishName = it.english_name ?: "",
+            iso6391 = it.iso_639_1 ?: "",
+            name = it.name ?: ""
         )
     } ?: emptyList()
 }

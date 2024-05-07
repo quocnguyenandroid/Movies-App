@@ -33,8 +33,8 @@ class MovieRepositoryImpl @Inject constructor(
 
                 // Get movie list from database if error from Api
                 val localMovieList = getMovieListFromDatabase(page)
-                if (localMovieList.isNullOrEmpty()) {
-                    emit(Resource.Error(message = "Something went wrong"))
+                if (localMovieList.isEmpty()) {
+                    emit(Resource.Error(message = "No data to be shown"))
                 } else {
                     emit(Resource.Success(data = localMovieList.map { it.toMovieModel() }))
 
@@ -65,7 +65,7 @@ class MovieRepositoryImpl @Inject constructor(
                 movieApi.searchMovie(query = query, page = page)
             } catch (e: Exception) {
                 e.printStackTrace()
-                emit(Resource.Error(message = "Something went wrong while searching"))
+                emit(Resource.Error(message = "Error while searching"))
                 return@flow
             }
 
@@ -91,7 +91,7 @@ class MovieRepositoryImpl @Inject constructor(
 
                 // Get movie details from database if error from Api
                 val localMovieDetails = movieDatabase.movieDetailDao.getMovieDetail(movieId)
-                if (localMovieDetails != null) {
+                if (localMovieDetails != null) { // Database will return null if movie not found
                     emit(Resource.Success(data = localMovieDetails.toMovieDetailModel()))
                 } else {
                     emit(Resource.Error(message = "Something went wrong"))
@@ -115,8 +115,6 @@ class MovieRepositoryImpl @Inject constructor(
         // Delete expired movies before fetching from database
         movieDatabase.movieDao.deleteExpiredMovies(now - expireTime)
         val movieList = movieDatabase.movieDao.getMovieList(page)
-        return movieList.ifEmpty {
-            emptyList()
-        }
+        return movieList
     }
 }

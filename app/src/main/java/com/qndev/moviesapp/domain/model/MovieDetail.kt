@@ -32,5 +32,7 @@ data class MovieDetail(
     val title: String,
     val video: Boolean,
     val voteAverage: Double,
-    val voteCount: Int
+    val voteCount: Int,
+
+    val imdbUrl: String
 )

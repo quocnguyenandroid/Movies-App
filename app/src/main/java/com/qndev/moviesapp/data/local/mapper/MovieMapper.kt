@@ -7,12 +7,10 @@ import com.qndev.moviesapp.data.local.movie.MovieEntity
 import com.qndev.moviesapp.data.remote.api.MovieApi
 import com.qndev.moviesapp.data.remote.response.movie_list.MovieDto
 import com.qndev.moviesapp.domain.model.Movie
-import javax.inject.Inject
 
 class MovieMapper {
 
-    @Inject
-    lateinit var gson: Gson
+    private val gson = Gson()
 
     @TypeConverter
     fun convertGenreListToJson(value: List<Int>): String = gson.toJson(value)
