@@ -8,3 +8,6 @@ This app keeps you up-to-date on popular movies. See what's trending, search for
 * **Retrofit**: HTTP client library for making network requests
 * **Gson**: JSON serialization/deserialization library for parsing API responses.
 * **RoomDatabase**:  Room is used for local data storage, get data when offline.
+
+## Testing
+This app includes unit test for Database and simple UI test in androidTest folder.
