@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,24 +29,29 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.qndev.moviesapp.presentation.navigation.Route
 import com.qndev.moviesapp.presentation.theme.Gray80
 import com.qndev.moviesapp.presentation.theme.LightSalmon
+import com.qndev.moviesapp.util.MOVIE_LIST_TEST_TAG
+import com.qndev.moviesapp.util.SEARCH_BAR_TEST_TAG
 
 
 @Composable
 fun MovieListScreen(
-    navController: NavController
+    navController: NavController,
+    movieListState: MovieListState,
+    onSearchTextChange: (String) -> Unit,
+    onLoadMore: (String) -> Unit
 ) {
 
-    val movieListViewModel = hiltViewModel<MovieListViewModel>()
-    val movieListState = movieListViewModel.movieListState.collectAsState().value
+//    val movieListViewModel = hiltViewModel<MovieListViewModel>()
+//    val movieListState = movieListViewModel.movieListState.collectAsState().value
 
 
     Column(
@@ -61,13 +65,16 @@ fun MovieListScreen(
         var searchText by rememberSaveable { mutableStateOf("") }
 
         TextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag(SEARCH_BAR_TEST_TAG),
             shape = RoundedCornerShape(40.dp),
             value = searchText,
             onValueChange = {
                 searchText = it
-                movieListViewModel.resetMovieListOnQueryChange()
-                movieListViewModel.searchOrGetMovies(it)
+//                movieListViewModel.resetMovieListOnQueryChange()
+//                movieListViewModel.searchOrGetMovies(it)
+                onSearchTextChange(it)
             },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = "search") },
             placeholder = { Text("Search movie") },
@@ -91,7 +98,10 @@ fun MovieListScreen(
         MovieListContent(
             movieListState = movieListState,
             navController = navController,
-            onLoadMore = { movieListViewModel.searchOrGetMovies(searchText) }
+            onLoadMore = {
+//                movieListViewModel.searchOrGetMovies(searchText)
+                onLoadMore(searchText)
+            }
         )
     }
 }
@@ -118,7 +128,11 @@ fun MovieListContent(
             CircularProgressIndicator()
         }
     } else {
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .testTag(MOVIE_LIST_TEST_TAG)
+        ) {
 
             items(movieListState.movieList.size) { position ->
                 val movieItem = movieListState.movieList[position]

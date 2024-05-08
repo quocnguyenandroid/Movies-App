@@ -22,8 +22,8 @@ class DetailViewModel @Inject constructor(
 
     private val movieId = savedStateHandle.get<Int>("movieId") ?: -1
 
-    private var _detailsState = MutableStateFlow(DetailsState())
-    val detailState = _detailsState.asStateFlow()
+    private var _detailState = MutableStateFlow(DetailState())
+    val detailState = _detailState.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -33,7 +33,7 @@ class DetailViewModel @Inject constructor(
 
     private fun getMovieDetails(movieId: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _detailsState.update {
+            _detailState.update {
                 it.copy(isLoading = true)
             }
 
@@ -41,18 +41,18 @@ class DetailViewModel @Inject constructor(
                 when (result) {
                     is Resource.Success -> {
                         result.data?.let { movieDetail ->
-                            _detailsState.update { it.copy(movieDetail = movieDetail) }
+                            _detailState.update { it.copy(movieDetail = movieDetail) }
                         }
                     }
 
                     is Resource.Error -> {
                         result.message?.let { msg ->
-                            _detailsState.update { it.copy(errorMessage = msg) }
+                            _detailState.update { it.copy(errorMessage = msg) }
                         }
                     }
 
                     is Resource.Loading -> {
-                        _detailsState.update { it.copy(isLoading = result.isLoading) }
+                        _detailState.update { it.copy(isLoading = result.isLoading) }
                     }
                 }
             }

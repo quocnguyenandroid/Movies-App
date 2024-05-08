@@ -68,7 +68,7 @@ fun MovieCard(
                 .height(150.dp)
                 .width(100.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(color = Onyx),
+                .background(color = Color.LightGray),
             contentAlignment = Alignment.Center
         ) {
             if (imageState is AsyncImagePainter.State.Error) {

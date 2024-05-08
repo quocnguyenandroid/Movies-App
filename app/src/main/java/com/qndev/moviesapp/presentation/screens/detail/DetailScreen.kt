@@ -29,7 +29,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -49,10 +47,12 @@ import com.qndev.moviesapp.presentation.theme.DarkGray
 import com.qndev.moviesapp.presentation.theme.Gray80
 
 @Composable
-fun DetailScreen() {
+fun DetailScreen(
+    detailState: DetailState
+) {
 
-    val detailViewModel = hiltViewModel<DetailViewModel>()
-    val detailState = detailViewModel.detailState.collectAsState().value
+//    val detailViewModel = hiltViewModel<DetailViewModel>()
+//    val detailState = detailViewModel.detailState.collectAsState().value
 
     val backDropImageState = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
