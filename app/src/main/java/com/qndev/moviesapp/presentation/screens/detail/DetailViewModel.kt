@@ -26,7 +26,9 @@ class DetailViewModel @Inject constructor(
     val detailState = _detailsState.asStateFlow()
 
     init {
-        getMovieDetails(movieId)
+        viewModelScope.launch(Dispatchers.IO) {
+            getMovieDetails(movieId)
+        }
     }
 
     private fun getMovieDetails(movieId: Int) {

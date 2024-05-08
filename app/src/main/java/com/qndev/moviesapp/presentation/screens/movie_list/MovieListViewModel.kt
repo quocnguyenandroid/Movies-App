@@ -22,7 +22,9 @@ class MovieListViewModel @Inject constructor(
     val movieListState = _movieListState.asStateFlow()
 
     init {
-        getTrendingMovies()
+        viewModelScope.launch(Dispatchers.IO) {
+            getTrendingMovies()
+        }
     }
 
 
