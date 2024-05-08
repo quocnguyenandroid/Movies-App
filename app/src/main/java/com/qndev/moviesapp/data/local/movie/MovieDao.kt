@@ -10,8 +10,8 @@ interface MovieDao {
     @Upsert
     suspend fun upsertMovieList(movies: List<MovieEntity>)
 
-    @Query("SELECT * FROM MovieEntity WHERE page = :page")
-    suspend fun getMovieList(page: Int): List<MovieEntity>
+    @Query("SELECT * FROM MovieEntity WHERE page = :page AND timeStamp > :timeStamp")
+    suspend fun getMovieList(page: Int, timeStamp: Long): List<MovieEntity>
 
     @Query(
         """

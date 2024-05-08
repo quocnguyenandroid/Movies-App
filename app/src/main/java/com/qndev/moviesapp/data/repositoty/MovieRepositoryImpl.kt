@@ -113,8 +113,9 @@ class MovieRepositoryImpl @Inject constructor(
 
     private suspend fun getMovieListFromDatabase(page: Int): List<MovieEntity> {
         // Delete expired movies before fetching from database
-        movieDatabase.movieDao.deleteExpiredMovies(now - expireTime)
-        val movieList = movieDatabase.movieDao.getMovieList(page)
+//        movieDatabase.movieDao.deleteExpiredMovies(now - expireTime)
+        val validTime = now - expireTime
+        val movieList = movieDatabase.movieDao.getMovieList(page, validTime)
         return movieList
     }
 }
